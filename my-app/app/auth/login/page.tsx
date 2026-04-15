@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -18,7 +18,7 @@ const Login = () => {
 
     axios
       .post(`/api/auth/login`, {
-        userName,//email
+        email,//email
         password,
       })
       .catch(function (error) {
@@ -52,7 +52,7 @@ const Login = () => {
                   placeholder="Enter your Email Address"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
                   required
-                  onChange={(e) => setUserName(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
