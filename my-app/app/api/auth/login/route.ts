@@ -1,9 +1,14 @@
+import { prisma } from "@/app/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-    const body = await request.json();
-    const { email = 'test@example.com', password = '123' } = body;
+    const { email, password } = await request.json();
 
-    if (email && password ) { 
+    const user = await prisma.user.findUnique({
+        where: { email },
+    });
+
+    if (user && user.password === password) { 
         return new Response(JSON.stringify({ message: 'Login successful' }), {
             status: 200,
         });
