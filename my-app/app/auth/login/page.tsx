@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -8,6 +8,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  useEffect(() => {
+    const getJwtSecretKey = () => {
+      console.log("Getting JWT secret key");
+      const secret = process.env.SECRET_KEY;
+      if (!secret) throw new Error("SECRET_KEY is not set");
+      return new TextEncoder().encode(secret);
+    };
+  }, []);
 
   const sendToRegister = () => {
     router.push("/auth/register");
