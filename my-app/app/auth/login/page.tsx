@@ -9,12 +9,10 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const getJwtSecretKey = () => {
-      console.log("Getting JWT secret key");
-      const secret = process.env.SECRET_KEY;
-      if (!secret) throw new Error("SECRET_KEY is not set");
-      return new TextEncoder().encode(secret);
-    };
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/dashboard');
+    }
   }, []);
 
   const sendToRegister = () => {
