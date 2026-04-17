@@ -1,4 +1,4 @@
-import {jwtVerify, SignJWT} from 'jose'
+import {SignJWT} from 'jose'
 
 const getJwtSecretKey = () => {
     const secret = process.env.SECRET_KEY;
@@ -13,14 +13,3 @@ const getJwtSecretKey = () => {
       .sign(getJwtSecretKey());
   };
 
-  export const verifyAuth = async (token: string) => {
-    try {
-      const { payload } = await jwtVerify(token, getJwtSecretKey());
-  
-      console.log("Token verified:", payload);
-      return true;
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      throw new Error("Invalid or expired token");
-    }
-  };
