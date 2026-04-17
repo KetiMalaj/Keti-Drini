@@ -3,21 +3,22 @@ import type { NextRequest } from "next/server";
 import { verifyAuth } from "./lib/auth";
 
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const url = request.nextUrl;
     const pathname = url.pathname;
-    const method = request.method;
+    // const method = request.method;
 
     const token = request.headers.get("Authorization")?.split(" ")[1];
-    const verifiedToken = token && await verifyAuth(token).catch(console.error);
+    const verifiedToken = token && (await verifyAuth(token).catch(console.error));
 
-    if (pathname.startsWith("/api/auth")) {
-        return verifiedToken
-            ? NextResponse.redirect(new URL("/Home", request.url))
-            : NextResponse.next();
+    if (pathname.startsWith("/api/auth/register")) {
+        return NextResponse.next();
     }
 
-    if (pathname.includes("/api/auth/register")) {
+    if (pathname.startsWith("/api/auth")) {
+        if (verifiedToken) {
+            return NextResponse.redirect(new URL("/home", request.url));
+        }
         return NextResponse.next();
     }
 

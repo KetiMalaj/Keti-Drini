@@ -8,12 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/dashboard');
-    }
-  }, []);
 
   const sendToRegister = () => {
     router.push("/auth/register");
@@ -24,8 +18,11 @@ const Login = () => {
 
     axios
       .post(`/api/auth/login`, {
-        email,//email
+        email,
         password,
+      })
+      .then(function (response) {
+        router.push("/Home");
       })
       .catch(function (error) {
         console.log(error);
