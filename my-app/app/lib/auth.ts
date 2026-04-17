@@ -1,4 +1,4 @@
-import {SignJWT} from 'jose'
+import {jwtVerify, SignJWT} from 'jose'
 
 const getJwtSecretKey = () => {
     const secret = process.env.SECRET_KEY;
@@ -13,3 +13,11 @@ const getJwtSecretKey = () => {
       .sign(getJwtSecretKey());
   };
 
+  export const verifyAuth = async (token: string) => {
+    try {
+      const { payload } = await jwtVerify(token, getJwtSecretKey());
+      return payload;
+    } catch {
+      return null;
+    }
+  };

@@ -1,0 +1,31 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { verifyAuth } from "@/app/lib/auth";
+
+export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  const token = request.cookies.get("token")?.value;
+  const verified = token ? await verifyAuth(token) : null;
+
+  if (pathname.startsWith("/auth")) {
+    if (verified) {
+      return NextResponse.redirect(new URL("/Home", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
+  }
+
+  if (!verified) {
+    return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+};
