@@ -1,5 +1,5 @@
 "use client";
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -8,6 +8,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/Home');
+    }
+  }, []);
 
   const sendToRegister = () => {
     router.push("/auth/register");
@@ -21,8 +27,9 @@ const Login = () => {
         email,
         password,
       })
-      .then(function () {
-        router.push("/Home");
+      .then(function (response) {
+        localStorage.setItem('token', response.data.token);
+        router.push('/Home');
       })
       .catch(function (error) {
         console.log(error);

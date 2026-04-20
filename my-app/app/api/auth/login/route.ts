@@ -1,6 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
 import { signToken } from "@/app/lib/auth";
-import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
     const { email, password } = await request.json();
@@ -19,13 +18,5 @@ export async function POST(request: Request) {
 
     const token = await signToken({ email: user.email, id: user.id });
 
-    const cookieStore = await cookies();
-    cookieStore.set("token", token, {
-        path: "/",
-        httpOnly: true,
-        sameSite: "strict",
-        maxAge: 60 * 60 * 24,
-    });
-
-    return Response.json({ message: "Login successful" });
+    return Response.json({ token });
 }

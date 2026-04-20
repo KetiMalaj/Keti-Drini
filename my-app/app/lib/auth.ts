@@ -1,6 +1,6 @@
 import {jwtVerify, SignJWT} from 'jose'
 
-const getJwtSecretKey = () => {
+export const getJwtSecretKey = () => {
     const secret = process.env.SECRET_KEY;
     if (!secret) throw new Error("SECRET_KEY is not set");
     return new TextEncoder().encode(secret);
