@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
         setShowForm(false);
       });
   };
+  axios.get('/api/student', { name , surname});
 
   return (
     <div className="p-10">
@@ -56,6 +58,18 @@ export default function Home() {
           </button>
         </form>
       )}
+      <table border ={1} style={{width: '67%', textAlign: 'left'}}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+          </tr>
+        </thead>
+        <tbody>
+          {}
+        </tbody>
+      </table>
     </div>
   );
 }
