@@ -5,8 +5,8 @@ import { verifyAuth } from "@/app/lib/auth";
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  const token = request.cookies.get("token")?.value;
-  const verified = token ? await verifyAuth(token) : null;
+  const token = request.headers.get("Authorization")?.split(" ")[1];
+  const verified = token ? await verifyAuth(token) : false;
 
   if (pathname.startsWith("/auth")) {
     if (verified) {

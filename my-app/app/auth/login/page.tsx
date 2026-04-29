@@ -9,11 +9,11 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    const token = localStorage.getItem('token');
     if (token) {
       router.push('/Home');
     }
-  }, []);
+  }, [router]);
 
   const sendToRegister = () => {
     router.push("/auth/register");
@@ -32,7 +32,7 @@ const Login = () => {
         router.push('/Home');
       })
       .catch(function (error) {
-        console.log(error);
+        alert("Login failed: " + (error.response?.data?.error || error.message));
       });
   };
 
