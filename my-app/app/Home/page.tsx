@@ -9,23 +9,32 @@ export default function Home() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const router = useRouter();
+  const [students, setStudents] = useState<{ id: number; name: string; surname: string }[]>([]);
+
+  useEffect(() => {
+   axios
+   .get("/api/student")
+   .then(function (response){
+    setStudents(response.data);
+   })
+   .catch(function(error){
+    console.log(error);
+   }
+   )
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    axios.post(`/api/student`, {
-        name,
-        surname,
-      })
-      .then(function (response) {
-        console.log(response.data);
+    await axios.post("/api/student", {
+      name,
+      surname,
+    });
 
-        setName("");
-        setSurname("");
-        setShowForm(false);
-      });
+    setName("");
+    setSurname("");
+    setShowForm(false);
   };
-  axios.get('/api/student', { name , surname});
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -71,8 +80,8 @@ export default function Home() {
       >
         Logout
       </button>
-    </div>
-      <table border ={1} style={{width: '67%', textAlign: 'left'}}>
+      </div>
+      <table border={1} style={{ width: "67%", textAlign: "left" }}>
         <thead>
           <tr>
             <th>ID</th>
@@ -80,8 +89,15 @@ export default function Home() {
             <th>Surname</th>
           </tr>
         </thead>
+
         <tbody>
-          {}
+          {students.map((student) => (
+            <tr key={student.id}>
+              <td>{student.id}</td>
+              <td>{student.name}</td>
+              <td>{student.surname}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
