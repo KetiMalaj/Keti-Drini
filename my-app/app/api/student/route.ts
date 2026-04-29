@@ -19,3 +19,7 @@ export async function POST(request: Request) {
         status: 201,
     });
 }
+export async function GET() {
+        const fetchstudents = await prisma.student.findMany();
+        return Response.json(fetchstudents);
+        };
