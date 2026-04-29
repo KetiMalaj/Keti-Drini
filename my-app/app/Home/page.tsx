@@ -13,14 +13,14 @@ export default function Home() {
 
   useEffect(() => {
    axios
-   .get("/api/student")
-   .then(function (response){
-    setStudents(response.data);
+    .get("/api/student")
+    .then(function (response){
+     setStudents(response.data);
    })
-   .catch(function(error){
-    console.log(error);
-   }
-   )
+    .catch(function(error){
+     console.log(error);
+    }
+    )
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,6 +30,9 @@ export default function Home() {
       name,
       surname,
     });
+
+    const response = await axios.get("/api/student");
+    setStudents(response.data);
 
     setName("");
     setSurname("");
